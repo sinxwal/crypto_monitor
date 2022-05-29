@@ -1,26 +1,29 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-const _baseUrl = 'https://sandbox-api.coinmarketcap.com/v1';
+import 'package:crypto/models/data_model.dart';
+import 'package:crypto/models/listing_result_model.dart';
+
+const _baseUrl = 'https://pro-api.coinmarketcap.com/v1';
 
 class CurrenciesRepository {
   CurrenciesRepository();
 
-  final Dio dio = Dio()
+  final dio = Dio()
     ..options.baseUrl = _baseUrl
-    ..options.headers = {
-      'X-CMC_PRO_API_KEY': 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
-    };
+    ..options.headers = {'X-CMC_PRO_API_KEY': dotenv.env['API_TOKEN']};
 
-  Future<List<dynamic>> getAllCurrencies() async {
+  Future<List<DataModel>> getAllCurrencies() async {
     try {
       final response = await dio.get('/cryptocurrency/listings/latest');
-
-      print(response);
-
-      return [];
+      final model = ListingResultModel.fromJson(response.data);
+      return model.data ?? [];
     } catch (e) {
-      print(e.toString());
-      throw "Network Error. Try again later.";
+      if (e is DioError) {
+        throw (e.error);
+      } else {
+        throw "Unknown error. Try again later.";
+      }
     }
   }
 }

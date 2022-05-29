@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:crypto/bloc/currencies_bloc.dart';
+import 'package:crypto/models/data_model.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class DashboardScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is CurrenciesInitialState ||
             state is CurrenciesLoadingState) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is CurrenciesErrorState) {
@@ -28,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
         }
 
         if (state is CurrenciesLoadedState) {
-          if (state.list.isEmpty) {
+          if (state.data.isEmpty) {
             return const Center(
               child: Text('List is empty', style: TextStyle(fontSize: 20)),
             );
@@ -43,9 +44,9 @@ class DashboardScreen extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      return const _ListItem();
+                      return _ListItem(currency: state.data[index]);
                     },
-                    itemCount: state.list.length,
+                    itemCount: state.data.length,
                   ),
                 ),
               ],
@@ -60,12 +61,19 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _ListItem extends StatelessWidget {
+  final DataModel currency;
+
   const _ListItem({
     Key? key,
+    required this.currency,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double usdPrice = currency.quote?.uSD?.price ?? 0;
+    double change24h = currency.quote?.uSD?.percentChange24h ?? 0;
+    // bool isRising = change24h > 0;
+
     return GestureDetector(
       onTap: () {
         print('item click');
@@ -91,15 +99,15 @@ class _ListItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Text('BTC', style: TextStyle(fontSize: 24)),
+            Text(currency.symbol ?? '', style: const TextStyle(fontSize: 20)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('9283.92 USD', style: TextStyle(fontSize: 20)),
-                    Text('0.518894%'),
+                  children: [
+                    Text('$usdPrice USD', style: const TextStyle(fontSize: 20)),
+                    Text('$change24h%'),
                   ],
                 ),
               ),

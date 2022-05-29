@@ -13,7 +13,7 @@ class CurrenciesErrorState extends CurrenciesState {
 }
 
 class CurrenciesLoadedState extends CurrenciesState {
-  final List<dynamic> list;
+  final List<DataModel> data;
 
-  CurrenciesLoadedState(this.list);
+  CurrenciesLoadedState(this.data);
 }

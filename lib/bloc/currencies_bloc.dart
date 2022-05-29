@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 
+import 'package:crypto/models/data_model.dart';
 import 'package:crypto/repositories/currencies_repository.dart';
 
 part 'currencies_event.dart';
