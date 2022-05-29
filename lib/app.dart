@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:crypto/bloc/currencies_bloc.dart';
+import 'package:crypto/repositories/currencies_repository.dart';
 import 'package:crypto/screens/dashboard_screen.dart';
 import 'package:crypto/screens/favorites_screen.dart';
 import 'package:crypto/screens/settings_screen.dart';
@@ -16,7 +19,6 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Kindacode.com',
       home: _AppHome(),
     );
   }
@@ -46,21 +48,26 @@ class _AppHomeState extends State<_AppHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_screens[_selectedScreenIndex]["title"]),
-      ),
-      body: _screens[_selectedScreenIndex]["name"],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedScreenIndex,
-        onTap: _selectScreen,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: "Favorites"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Settings"),
-        ],
+    return BlocProvider(
+      create: (context) => CurrenciesBloc(
+        currenciesRepository: CurrenciesRepository(),
+      )..add(LoadCurrenciesEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_screens[_selectedScreenIndex]["title"]),
+        ),
+        body: _screens[_selectedScreenIndex]["name"],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedScreenIndex,
+          onTap: _selectScreen,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite), label: "Favorites"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: "Settings"),
+          ],
+        ),
       ),
     );
   }
