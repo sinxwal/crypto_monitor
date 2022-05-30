@@ -14,6 +14,11 @@ class CurrenciesErrorState extends CurrenciesState {
 
 class CurrenciesLoadedState extends CurrenciesState {
   final List<DataModel> data;
+  Set<int> favIds = {};
 
-  CurrenciesLoadedState(this.data);
+  CurrenciesLoadedState copyWith(Set<int> ids) {
+    return CurrenciesLoadedState(data, ids);
+  }
+
+  CurrenciesLoadedState(this.data, this.favIds);
 }

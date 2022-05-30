@@ -17,9 +17,31 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
       emit(CurrenciesLoadingState());
       try {
         final currencies = await currenciesRepository.getAllCurrencies();
-        emit(CurrenciesLoadedState(currencies));
+        emit(CurrenciesLoadedState(currencies, {}));
       } catch (e) {
         emit(CurrenciesErrorState(e.toString()));
+      }
+    });
+
+    on<AddToFavsEvent>((
+      AddToFavsEvent event,
+      Emitter<CurrenciesState> emit,
+    ) {
+      if (state is CurrenciesLoadedState) {
+        Set<int> nextIds = Set.from((state as CurrenciesLoadedState).favIds);
+        nextIds.add(event.id);
+        emit((state as CurrenciesLoadedState).copyWith(nextIds));
+      }
+    });
+
+    on<RemoveFromFavsEvent>((
+      RemoveFromFavsEvent event,
+      Emitter<CurrenciesState> emit,
+    ) {
+      if (state is CurrenciesLoadedState) {
+        Set<int> nextIds = Set.from((state as CurrenciesLoadedState).favIds);
+        nextIds.remove(event.id);
+        emit((state as CurrenciesLoadedState).copyWith(nextIds));
       }
     });
   }

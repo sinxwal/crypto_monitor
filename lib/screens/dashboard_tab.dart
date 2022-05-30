@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:crypto/bloc/currencies_bloc.dart';
+import 'package:crypto/screens/details_screen.dart';
 import 'package:crypto/models/data_model.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class DashboardTab extends StatelessWidget {
+  const DashboardTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +37,16 @@ class DashboardScreen extends StatelessWidget {
           } else {
             return Column(
               children: [
-                // const Text(
-                //   'Dashboard Screen',
-                //   style: TextStyle(fontSize: 30),
-                // ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      return _ListItem(currency: state.data[index]);
+                      DataModel item = state.data[index];
+                      bool isFavorite = state.favIds.contains(item.id);
+                      return _ListItem(
+                        currency: item,
+                        isFavorite: isFavorite,
+                      );
                     },
                     itemCount: state.data.length,
                   ),
@@ -62,10 +64,12 @@ class DashboardScreen extends StatelessWidget {
 
 class _ListItem extends StatelessWidget {
   final DataModel currency;
+  final bool isFavorite;
 
   const _ListItem({
     Key? key,
     required this.currency,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -76,7 +80,11 @@ class _ListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print('item click');
+        Navigator.pushNamed(
+          context,
+          DetailsScreen.routeName,
+          arguments: currency,
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -113,12 +121,19 @@ class _ListItem extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(
-                Icons.star_border,
+              icon: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
                 size: 30,
               ),
               onPressed: () {
-                print('star');
+                final bloc = context.read<CurrenciesBloc>();
+                if (currency.id != null) {
+                  if (isFavorite) {
+                    bloc.add(RemoveFromFavsEvent(currency.id as int));
+                  } else {
+                    bloc.add(AddToFavsEvent(currency.id as int));
+                  }
+                }
               },
             ),
           ],
