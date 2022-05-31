@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:crypto/screens/home_screen.dart';
-import 'package:crypto/screens/details_screen.dart';
-import 'package:crypto/models/data_model.dart';
+import 'screens/home_screen.dart';
+import 'screens/details_screen.dart';
+import 'models/data_model.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

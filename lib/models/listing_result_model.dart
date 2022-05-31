@@ -1,5 +1,5 @@
-import 'package:crypto/models/data_model.dart';
-import 'package:crypto/models/status_model.dart';
+import 'data_model.dart';
+import 'status_model.dart';
 
 class ListingResultModel {
   List<DataModel>? data;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
-import 'package:crypto/bloc/currencies_bloc.dart';
-import 'package:crypto/screens/details_screen.dart';
-import 'package:crypto/models/data_model.dart';
+import '../bloc/currencies_bloc.dart';
+import '../models/data_model.dart';
+import 'details_screen.dart';
 
 class DashboardTab extends StatelessWidget {
   const DashboardTab({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class DashboardTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrenciesBloc, CurrenciesState>(
+      bloc: GetIt.I.get<CurrenciesBloc>(),
       builder: (context, state) {
         if (state is CurrenciesInitialState ||
             state is CurrenciesLoadingState) {
@@ -126,7 +128,7 @@ class _ListItem extends StatelessWidget {
                 size: 30,
               ),
               onPressed: () {
-                final bloc = context.read<CurrenciesBloc>();
+                final bloc = GetIt.I.get<CurrenciesBloc>();
                 if (currency.id != null) {
                   if (isFavorite) {
                     bloc.add(RemoveFromFavsEvent(currency.id as int));

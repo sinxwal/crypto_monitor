@@ -1,4 +1,4 @@
-import 'package:crypto/models/quote_model.dart';
+import 'quote_model.dart';
 
 class DataModel {
   int? id;

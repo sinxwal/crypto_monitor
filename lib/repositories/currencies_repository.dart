@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:crypto/models/data_model.dart';
-import 'package:crypto/models/listing_result_model.dart';
+import '../models/data_model.dart';
+import '../models/listing_result_model.dart';
 
 const _baseUrl = 'https://pro-api.coinmarketcap.com/v1';
 

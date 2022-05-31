@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:crypto/bloc/currencies_bloc.dart';
-import 'package:crypto/repositories/currencies_repository.dart';
-import 'package:crypto/screens/dashboard_tab.dart';
-import 'package:crypto/screens/favorites_tab.dart';
-import 'package:crypto/screens/settings_tab.dart';
+import 'dashboard_tab.dart';
+import 'favorites_tab.dart';
+import 'settings_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -33,33 +30,28 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CurrenciesBloc(
-        currenciesRepository: CurrenciesRepository(),
-      )..add(LoadCurrenciesEvent()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(_tabs[_selectedTabIndex]["title"]),
-        ),
-        body: _tabs[_selectedTabIndex]["name"],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedTabIndex,
-          onTap: _selectTab,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: "Favorites",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "Settings",
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_tabs[_selectedTabIndex]["title"]),
+      ),
+      body: _tabs[_selectedTabIndex]["name"],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTabIndex,
+        onTap: _selectTab,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favorites",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
       ),
     );
   }

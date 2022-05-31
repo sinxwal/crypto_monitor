@@ -1,5 +1,6 @@
-import 'package:crypto/models/data_model.dart';
 import 'package:flutter/material.dart';
+
+import '../models/data_model.dart';
 
 class DetailsScreen extends StatelessWidget {
   static const routeName = '/details';

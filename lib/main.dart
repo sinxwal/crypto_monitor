@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:crypto/app.dart';
+import 'bloc/currencies_bloc.dart';
+import 'repositories/currencies_repository.dart';
+import 'app.dart';
+
+Future<void> setup() async {
+  await dotenv.load(fileName: ".env");
+
+  final prefs = await SharedPreferences.getInstance();
+  final currenciesRepository = CurrenciesRepository();
+
+  GetIt.I.registerSingleton<SharedPreferences>(prefs);
+  GetIt.I.registerSingleton<CurrenciesBloc>(
+    CurrenciesBloc(
+      sharedPrefs: prefs,
+      currenciesRepository: currenciesRepository,
+    )..add(LoadCurrenciesEvent()),
+  );
+}
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
+  await setup();
   runApp(const App());
 }
 
