@@ -33,7 +33,10 @@ class HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(_tabs[_selectedTabIndex]["title"]),
+        title: Text(
+          _tabs[_selectedTabIndex]["title"],
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
       ),
       body: _tabs[_selectedTabIndex]["name"],
       bottomNavigationBar: BottomNavigationBar(

@@ -29,14 +29,25 @@ class SettingsTab extends StatelessWidget {
             child: Column(
               children: [
                 SwitchListTile(
-                    title: const Text('Dark theme'),
-                    value: true,
-                    onChanged: (_) {
-                      return;
+                    title: Text(
+                      'Dark theme',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    value: state.isDarkTheme,
+                    onChanged: (value) {
+                      if (value) {
+                        bloc.add(ToggleDarkThemeEvent(true));
+                      } else {
+                        bloc.add(ToggleDarkThemeEvent(false));
+                      }
                     }),
                 ListTile(
-                  title: const Text('Base currency'),
+                  title: Text(
+                    'Base currency',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                   trailing: DropdownButton(
+                    style: Theme.of(context).textTheme.bodyText1,
                     value: code.toString(),
                     items: dropdownItems,
                     onChanged: (value) {

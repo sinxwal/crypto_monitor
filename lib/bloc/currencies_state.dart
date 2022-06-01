@@ -17,18 +17,25 @@ class CurrenciesLoadedState extends CurrenciesState {
     this.data = const [],
     this.currencyCode = "USD",
     this.favoriteIds = const {},
+    this.isDarkTheme = false,
   });
 
   final List<DataModel> data;
   final String currencyCode;
   Set<int> favoriteIds = {};
+  bool isDarkTheme = false;
 
-  CurrenciesLoadedState copyWith(
-      {List<DataModel>? data, Set<int>? favoriteIds, String? currencyCode}) {
+  CurrenciesLoadedState copyWith({
+    List<DataModel>? data,
+    String? currencyCode,
+    Set<int>? favoriteIds,
+    bool? isDarkTheme,
+  }) {
     return CurrenciesLoadedState(
       data: data ?? this.data,
       currencyCode: currencyCode ?? this.currencyCode,
       favoriteIds: favoriteIds ?? this.favoriteIds,
+      isDarkTheme: isDarkTheme ?? this.isDarkTheme,
     );
   }
 }

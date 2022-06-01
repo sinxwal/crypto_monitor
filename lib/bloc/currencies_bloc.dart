@@ -9,6 +9,7 @@ part 'currencies_state.dart';
 
 const _favsKey = 'favorites';
 const _codeKey = 'currencyCode';
+const _themeKey = 'isDarkTheme';
 
 Set<int> convertStringSetToIntSet(Set<String> strings) {
   return strings.fold<Set<int>>(<int>{}, (previousValue, element) {
@@ -38,11 +39,13 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
         final Set<int> favsSet = convertStringSetToIntSet(favsRawSet);
 
         final currencyCode = sharedPrefs.getString(_codeKey) ?? 'USD';
+        final isDarkTheme = sharedPrefs.getBool(_themeKey) ?? false;
 
         emit(CurrenciesLoadedState(
           data: currencies,
           currencyCode: currencyCode,
           favoriteIds: favsSet,
+          isDarkTheme: isDarkTheme,
         ));
       } catch (e) {
         emit(CurrenciesErrorState(e.toString()));
@@ -83,6 +86,18 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
         await sharedPrefs.setString(_codeKey, event.currencyCode);
         emit((state as CurrenciesLoadedState).copyWith(
           currencyCode: event.currencyCode,
+        ));
+      }
+    });
+
+    on<ToggleDarkThemeEvent>((
+      ToggleDarkThemeEvent event,
+      Emitter<CurrenciesState> emit,
+    ) async {
+      if (state is CurrenciesLoadedState) {
+        await sharedPrefs.setBool(_themeKey, event.isDarkTheme);
+        emit((state as CurrenciesLoadedState).copyWith(
+          isDarkTheme: event.isDarkTheme,
         ));
       }
     });

@@ -21,3 +21,9 @@ class SelectCurrencyCodeEvent extends CurrenciesEvent {
 
   SelectCurrencyCodeEvent(this.currencyCode);
 }
+
+class ToggleDarkThemeEvent extends CurrenciesEvent {
+  final bool isDarkTheme;
+
+  ToggleDarkThemeEvent(this.isDarkTheme);
+}
