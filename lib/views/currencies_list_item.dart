@@ -5,20 +5,26 @@ import '../bloc/currencies_bloc.dart';
 import '../models/data_model.dart';
 import '../screens/details_screen.dart';
 
+const baseTextStyle = TextStyle(fontSize: 20);
+
 class CurrenciesListItem extends StatelessWidget {
   final DataModel currency;
+  final String currencyCode;
   final bool isFavorite;
 
   const CurrenciesListItem({
     Key? key,
     required this.currency,
+    required this.currencyCode,
     required this.isFavorite,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final usdPrice = currency.quote?.uSD?.price ?? 0;
-    final roundedPrice = usdPrice.toStringAsFixed(4);
+    final usdPriceRaw = currency.quote?.uSD?.price ?? 0;
+    final rubPriceRaw = currency.quote?.rUB?.price ?? 0;
+    final usdPrice = '${usdPriceRaw.toStringAsFixed(4)} USD';
+    final rubPrice = '${rubPriceRaw.toStringAsFixed(4)} RUB';
     double change24h = currency.quote?.uSD?.percentChange24h ?? 0;
     bool isRising = change24h > 0;
 
@@ -31,10 +37,7 @@ class CurrenciesListItem extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 12,
-        ),
+        padding: const EdgeInsets.all(12.0),
         margin: const EdgeInsets.symmetric(
           horizontal: 12.0,
           vertical: 8.0,
@@ -51,21 +54,20 @@ class CurrenciesListItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(currency.symbol ?? '', style: const TextStyle(fontSize: 20)),
+            Text(currency.symbol ?? '', style: baseTextStyle),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Row(
-                  children: [
-                    Text(
-                      '$roundedPrice USD',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    isRising
-                        ? const Icon(Icons.arrow_upward, color: Colors.green)
-                        : const Icon(Icons.arrow_downward, color: Colors.red),
-                  ],
-                ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 8),
+                  Text(
+                    currencyCode == 'USD' ? usdPrice : rubPrice,
+                    style: baseTextStyle,
+                  ),
+                  const SizedBox(width: 4),
+                  isRising
+                      ? const Icon(Icons.arrow_upward, color: Colors.green)
+                      : const Icon(Icons.arrow_downward, color: Colors.red),
+                ],
               ),
             ),
             IconButton(
@@ -75,6 +77,7 @@ class CurrenciesListItem extends StatelessWidget {
               ),
               onPressed: () {
                 final bloc = GetIt.I.get<CurrenciesBloc>();
+                // TODO: Remove unnecessary type casting.
                 if (currency.id != null) {
                   if (isFavorite) {
                     bloc.add(RemoveFromFavsEvent(currency.id as int));

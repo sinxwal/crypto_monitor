@@ -8,10 +8,12 @@ import 'currencies_list_item.dart';
 class CurrenciesList extends StatelessWidget {
   const CurrenciesList({
     Key? key,
+    required this.currencyCode,
     required this.list,
     required this.favoriteIds,
   }) : super(key: key);
 
+  final String currencyCode;
   final List<DataModel> list;
   final Set<int> favoriteIds;
 
@@ -34,6 +36,7 @@ class CurrenciesList extends StatelessWidget {
                 bool isFavorite = favoriteIds.contains(item.id);
                 return CurrenciesListItem(
                   currency: item,
+                  currencyCode: currencyCode,
                   isFavorite: isFavorite,
                 );
               },

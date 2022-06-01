@@ -7,7 +7,8 @@ import '../repositories/currencies_repository.dart';
 part 'currencies_event.dart';
 part 'currencies_state.dart';
 
-const favsKey = 'favorites';
+const _favsKey = 'favorites';
+const _codeKey = 'currencyCode';
 
 Set<int> convertStringSetToIntSet(Set<String> strings) {
   return strings.fold<Set<int>>(<int>{}, (previousValue, element) {
@@ -32,11 +33,17 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
       try {
         final currencies = await currenciesRepository.getAllCurrencies();
 
-        final favsSerialized = sharedPrefs.getString(favsKey) ?? '';
+        final favsSerialized = sharedPrefs.getString(_favsKey) ?? '';
         final Set<String> favsRawSet = Set.of(favsSerialized.split(','));
         final Set<int> favsSet = convertStringSetToIntSet(favsRawSet);
 
-        emit(CurrenciesLoadedState(currencies, favsSet));
+        final currencyCode = sharedPrefs.getString(_codeKey) ?? 'USD';
+
+        emit(CurrenciesLoadedState(
+          data: currencies,
+          currencyCode: currencyCode,
+          favoriteIds: favsSet,
+        ));
       } catch (e) {
         emit(CurrenciesErrorState(e.toString()));
       }
@@ -47,10 +54,11 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
       Emitter<CurrenciesState> emit,
     ) async {
       if (state is CurrenciesLoadedState) {
-        Set<int> nextIds = Set.from((state as CurrenciesLoadedState).favIds);
+        Set<int> nextIds =
+            Set.from((state as CurrenciesLoadedState).favoriteIds);
         nextIds.add(event.id);
-        await sharedPrefs.setString(favsKey, nextIds.join(','));
-        emit((state as CurrenciesLoadedState).copyWith(nextIds));
+        await sharedPrefs.setString(_favsKey, nextIds.join(','));
+        emit((state as CurrenciesLoadedState).copyWith(favoriteIds: nextIds));
       }
     });
 
@@ -59,10 +67,23 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
       Emitter<CurrenciesState> emit,
     ) async {
       if (state is CurrenciesLoadedState) {
-        Set<int> nextIds = Set.from((state as CurrenciesLoadedState).favIds);
+        Set<int> nextIds =
+            Set.from((state as CurrenciesLoadedState).favoriteIds);
         nextIds.remove(event.id);
-        await sharedPrefs.setString(favsKey, nextIds.join(','));
-        emit((state as CurrenciesLoadedState).copyWith(nextIds));
+        await sharedPrefs.setString(_favsKey, nextIds.join(','));
+        emit((state as CurrenciesLoadedState).copyWith(favoriteIds: nextIds));
+      }
+    });
+
+    on<SelectCurrencyCodeEvent>((
+      SelectCurrencyCodeEvent event,
+      Emitter<CurrenciesState> emit,
+    ) async {
+      if (state is CurrenciesLoadedState) {
+        await sharedPrefs.setString(_codeKey, event.currencyCode);
+        emit((state as CurrenciesLoadedState).copyWith(
+          currencyCode: event.currencyCode,
+        ));
       }
     });
   }

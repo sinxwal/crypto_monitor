@@ -15,3 +15,9 @@ class RemoveFromFavsEvent extends CurrenciesEvent {
 
   RemoveFromFavsEvent(this.id);
 }
+
+class SelectCurrencyCodeEvent extends CurrenciesEvent {
+  final String currencyCode;
+
+  SelectCurrencyCodeEvent(this.currencyCode);
+}

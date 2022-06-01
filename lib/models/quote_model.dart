@@ -1,12 +1,12 @@
 class QuoteModel {
   USD? uSD;
-  BTC? bTC;
+  RUB? rUB;
 
-  QuoteModel({this.uSD, this.bTC});
+  QuoteModel({this.uSD, this.rUB});
 
   QuoteModel.fromJson(Map<String, dynamic> json) {
     uSD = json['USD'] != null ? USD.fromJson(json['USD']) : null;
-    bTC = json['BTC'] != null ? BTC.fromJson(json['BTC']) : null;
+    rUB = json['RUB'] != null ? RUB.fromJson(json['RUB']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -14,8 +14,8 @@ class QuoteModel {
     if (uSD != null) {
       data['USD'] = uSD!.toJson();
     }
-    if (bTC != null) {
-      data['BTC'] = bTC!.toJson();
+    if (rUB != null) {
+      data['RUB'] = rUB!.toJson();
     }
     return data;
   }
@@ -71,7 +71,7 @@ class USD {
   }
 }
 
-class BTC {
+class RUB {
   double? price;
   double? volume24h;
   double? volumeChange24h;
@@ -82,7 +82,7 @@ class BTC {
   double? marketCapDominance;
   String? lastUpdated;
 
-  BTC({
+  RUB({
     this.price,
     this.volume24h,
     this.volumeChange24h,
@@ -94,7 +94,7 @@ class BTC {
     this.lastUpdated,
   });
 
-  BTC.fromJson(Map<String, dynamic> json) {
+  RUB.fromJson(Map<String, dynamic> json) {
     price = json['price'];
     volume24h = json['volume_24h'];
     volumeChange24h = json['volume_change_24h'];

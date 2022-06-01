@@ -13,12 +13,22 @@ class CurrenciesErrorState extends CurrenciesState {
 }
 
 class CurrenciesLoadedState extends CurrenciesState {
+  CurrenciesLoadedState({
+    this.data = const [],
+    this.currencyCode = "USD",
+    this.favoriteIds = const {},
+  });
+
   final List<DataModel> data;
-  Set<int> favIds = {};
+  final String currencyCode;
+  Set<int> favoriteIds = {};
 
-  CurrenciesLoadedState copyWith(Set<int> ids) {
-    return CurrenciesLoadedState(data, ids);
+  CurrenciesLoadedState copyWith(
+      {List<DataModel>? data, Set<int>? favoriteIds, String? currencyCode}) {
+    return CurrenciesLoadedState(
+      data: data ?? this.data,
+      currencyCode: currencyCode ?? this.currencyCode,
+      favoriteIds: favoriteIds ?? this.favoriteIds,
+    );
   }
-
-  CurrenciesLoadedState(this.data, this.favIds);
 }

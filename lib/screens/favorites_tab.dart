@@ -28,8 +28,9 @@ class FavoritesTab extends StatelessWidget {
         }
 
         if (state is CurrenciesLoadedState) {
-          final items =
-              state.data.where((el) => state.favIds.contains(el.id)).toList();
+          final items = state.data
+              .where((el) => state.favoriteIds.contains(el.id))
+              .toList();
           if (items.isEmpty) {
             return const Center(
               child: Text(
@@ -39,8 +40,9 @@ class FavoritesTab extends StatelessWidget {
             );
           } else {
             return CurrenciesList(
+              currencyCode: state.currencyCode,
+              favoriteIds: state.favoriteIds,
               list: items,
-              favoriteIds: state.favIds,
             );
           }
         }

@@ -32,6 +32,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(_tabs[_selectedTabIndex]["title"]),
       ),
       body: _tabs[_selectedTabIndex]["name"],

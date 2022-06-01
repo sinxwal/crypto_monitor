@@ -38,8 +38,9 @@ class DashboardTab extends StatelessWidget {
             );
           } else {
             return CurrenciesList(
+              currencyCode: state.currencyCode,
+              favoriteIds: state.favoriteIds,
               list: items,
-              favoriteIds: state.favIds,
             );
           }
         }

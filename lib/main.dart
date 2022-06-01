@@ -10,13 +10,12 @@ import 'app.dart';
 Future<void> setup() async {
   await dotenv.load(fileName: ".env");
 
-  final prefs = await SharedPreferences.getInstance();
-  final currenciesRepository = CurrenciesRepository();
+  final sharedPrefs = await SharedPreferences.getInstance();
+  final currenciesRepository = CurrenciesRepository(sharedPrefs);
 
-  GetIt.I.registerSingleton<SharedPreferences>(prefs);
   GetIt.I.registerSingleton<CurrenciesBloc>(
     CurrenciesBloc(
-      sharedPrefs: prefs,
+      sharedPrefs: sharedPrefs,
       currenciesRepository: currenciesRepository,
     )..add(LoadCurrenciesEvent()),
   );
