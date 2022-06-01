@@ -40,6 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       body: _tabs[_selectedTabIndex]["name"],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white70,
         currentIndex: _selectedTabIndex,
         onTap: _selectTab,
         items: const [
