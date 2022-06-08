@@ -50,6 +50,7 @@ class _AppState extends State<App> {
               appBarTheme: AppBarTheme(
                 backgroundColor: Colors.white,
                 elevation: 2,
+                iconTheme: const IconThemeData(color: Colors.black),
                 titleTextStyle: TextStyle(
                   color: Colors.black.withOpacity(0.95),
                   fontSize: 26.0,

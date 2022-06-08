@@ -11,7 +11,6 @@ class SettingsTab extends StatelessWidget {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(value: "USD", child: Text("USD")),
       const DropdownMenuItem(value: "RUB", child: Text("RUB")),
-      const DropdownMenuItem(value: "BTC", enabled: false, child: Text("BTC")),
     ];
     return menuItems;
   }
@@ -29,6 +28,7 @@ class SettingsTab extends StatelessWidget {
             child: Column(
               children: [
                 SwitchListTile(
+                    activeColor: Colors.yellow.shade800,
                     title: Text(
                       'Dark theme',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -47,7 +47,8 @@ class SettingsTab extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   trailing: DropdownButton(
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: TextStyle(color: Colors.yellow.shade800),
+                    iconEnabledColor: Colors.yellow.shade800,
                     value: code.toString(),
                     items: dropdownItems,
                     onChanged: (value) {
