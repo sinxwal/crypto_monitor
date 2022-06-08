@@ -56,6 +56,7 @@ class SettingsTab extends StatelessWidget {
                       } else {
                         bloc.add(SelectCurrencyCodeEvent("RUB"));
                       }
+                      bloc.add(LoadCurrenciesEvent());
                     },
                   ),
                 ),

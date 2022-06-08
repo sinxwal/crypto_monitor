@@ -84,6 +84,8 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
     ) async {
       if (state is CurrenciesLoadedState) {
         await sharedPrefs.setString(_codeKey, event.currencyCode);
+      }
+      if (state is CurrenciesLoadedState) {
         emit((state as CurrenciesLoadedState).copyWith(
           currencyCode: event.currencyCode,
         ));
