@@ -39,10 +39,10 @@ class _FavoritesTabState extends State<FavoritesTab> {
               .where((el) => state.favoriteIds.contains(el.id))
               .toList();
           if (items.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 'Favorites list is empty',
-                style: TextStyle(fontSize: 20),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             );
           } else {
