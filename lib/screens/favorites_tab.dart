@@ -6,8 +6,15 @@ import '../bloc/currencies_bloc.dart';
 import '../views/currencies_list.dart';
 import '../views/error_message.dart';
 
-class FavoritesTab extends StatelessWidget {
+class FavoritesTab extends StatefulWidget {
   const FavoritesTab({Key? key}) : super(key: key);
+
+  @override
+  State<FavoritesTab> createState() => _FavoritesTabState();
+}
+
+class _FavoritesTabState extends State<FavoritesTab> {
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +46,54 @@ class FavoritesTab extends StatelessWidget {
               ),
             );
           } else {
-            return CurrenciesList(
-              currencyCode: state.currencyCode,
-              favoriteIds: state.favoriteIds,
-              list: items,
-            );
+            return ValueListenableBuilder(
+                valueListenable: _controller,
+                builder: (context, TextEditingValue value, __) {
+                  return Column(
+                    children: [
+                      const SizedBox(height: 12.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Card(
+                          child: ListTile(
+                            title: TextField(
+                              controller: _controller,
+                              decoration: const InputDecoration(
+                                hintText: 'Filter',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.cancel),
+                              onPressed: () {
+                                _controller.clear();
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: CurrenciesList(
+                          currencyCode: state.currencyCode,
+                          favoriteIds: state.favoriteIds,
+                          list: items,
+                          filter: value.text,
+                        ),
+                      ),
+                    ],
+                  );
+                });
           }
         }
 
         return Container();
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
