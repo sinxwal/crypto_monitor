@@ -24,7 +24,7 @@ class SettingsTab extends StatelessWidget {
         if (state is CurrenciesLoadedState) {
           final code = state.currencyCode;
           return Padding(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4.0),
             child: Column(
               children: [
                 SwitchListTile(

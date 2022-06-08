@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/data_model.dart';
+import '../views/details_view.dart';
 
 class DetailsScreen extends StatelessWidget {
   static const routeName = '/details';
@@ -19,7 +20,7 @@ class DetailsScreen extends StatelessWidget {
         title: Text('${currency.name} summary'),
       ),
       body: Center(
-        child: Text('Details of ${currency.name}'),
+        child: DetailsView(data: currency),
       ),
     );
   }
