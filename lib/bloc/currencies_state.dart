@@ -6,9 +6,11 @@ class CurrenciesInitialState extends CurrenciesState {}
 
 class CurrenciesLoadingState extends CurrenciesState {
   CurrenciesLoadingState({
+    required this.currencyCode,
     required this.isDarkTheme,
   });
 
+  final String currencyCode;
   final bool isDarkTheme;
 }
 

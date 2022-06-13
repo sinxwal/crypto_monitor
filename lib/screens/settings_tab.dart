@@ -23,51 +23,65 @@ class SettingsTab extends StatelessWidget {
       builder: (context, state) {
         if (state is CurrenciesLoadedState) {
           final code = state.currencyCode;
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Column(
-              children: [
-                SwitchListTile(
-                    activeColor: Colors.yellow.shade800,
-                    title: Text(
-                      'Dark theme',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    value: state.isDarkTheme,
-                    onChanged: (value) {
-                      if (value) {
-                        bloc.add(ToggleDarkThemeEvent(true));
-                      } else {
-                        bloc.add(ToggleDarkThemeEvent(false));
-                      }
-                    }),
-                ListTile(
-                  title: Text(
-                    'Base currency',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  trailing: DropdownButton(
-                    style: TextStyle(color: Colors.yellow.shade800),
-                    iconEnabledColor: Colors.yellow.shade800,
-                    value: code.toString(),
-                    items: dropdownItems,
-                    onChanged: (value) {
-                      if (value == "USD") {
-                        bloc.add(SelectCurrencyCodeEvent("USD"));
-                      } else {
-                        bloc.add(SelectCurrencyCodeEvent("RUB"));
-                      }
-                      bloc.add(LoadCurrenciesEvent());
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
+          final isDarkTheme = state.isDarkTheme;
+          return _renderContent(context, bloc, code, isDarkTheme);
+        } else if (state is CurrenciesLoadingState) {
+          final code = state.currencyCode;
+          final isDarkTheme = state.isDarkTheme;
+          return _renderContent(context, bloc, code, isDarkTheme);
         }
 
         return Container();
       },
+    );
+  }
+
+  Padding _renderContent(
+    BuildContext context,
+    CurrenciesBloc bloc,
+    String code,
+    bool isDarkTheme,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        children: [
+          SwitchListTile(
+              activeColor: Colors.yellow.shade800,
+              title: Text(
+                'Dark theme',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              value: isDarkTheme,
+              onChanged: (value) {
+                if (value) {
+                  bloc.add(ToggleDarkThemeEvent(true));
+                } else {
+                  bloc.add(ToggleDarkThemeEvent(false));
+                }
+              }),
+          ListTile(
+            title: Text(
+              'Base currency',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            trailing: DropdownButton(
+              style: TextStyle(color: Colors.yellow.shade800),
+              iconEnabledColor: Colors.yellow.shade800,
+              value: code.toString(),
+              items: dropdownItems,
+              onChanged: (value) {
+                if (value == "USD") {
+                  bloc.add(SelectCurrencyCodeEvent("USD"));
+                } else {
+                  bloc.add(SelectCurrencyCodeEvent("RUB"));
+                }
+                bloc.add(LoadCurrenciesEvent());
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
