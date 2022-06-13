@@ -30,7 +30,12 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
       LoadCurrenciesEvent event,
       Emitter<CurrenciesState> emit,
     ) async {
-      emit(CurrenciesLoadingState());
+      if (state is CurrenciesLoadedState) {
+        final isDarkTheme = (state as CurrenciesLoadedState).isDarkTheme;
+        emit(CurrenciesLoadingState(isDarkTheme: isDarkTheme));
+      } else {
+        emit(CurrenciesLoadingState(isDarkTheme: false));
+      }
       try {
         final currencies = await currenciesRepository.getAllCurrencies();
 

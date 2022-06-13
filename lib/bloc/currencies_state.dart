@@ -4,7 +4,13 @@ abstract class CurrenciesState {}
 
 class CurrenciesInitialState extends CurrenciesState {}
 
-class CurrenciesLoadingState extends CurrenciesState {}
+class CurrenciesLoadingState extends CurrenciesState {
+  CurrenciesLoadingState({
+    required this.isDarkTheme,
+  });
+
+  final bool isDarkTheme;
+}
 
 class CurrenciesErrorState extends CurrenciesState {
   final String message;

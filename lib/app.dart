@@ -20,8 +20,11 @@ class _AppState extends State<App> {
     return BlocBuilder<CurrenciesBloc, CurrenciesState>(
       bloc: GetIt.I.get<CurrenciesBloc>(),
       builder: (context, state) {
-        final isDarkTheme =
-            state is CurrenciesLoadedState ? state.isDarkTheme : false;
+        final isDarkTheme = state is CurrenciesLoadedState
+            ? state.isDarkTheme
+            : state is CurrenciesLoadingState
+                ? state.isDarkTheme
+                : false;
 
         return MaterialApp(
           themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
